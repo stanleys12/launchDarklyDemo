@@ -1,2 +1,2 @@
-launchdarkly-server-sdk
-python-dotenv
+ldclient-py>=9.0.0
+python-dotenv>=1.0.0
