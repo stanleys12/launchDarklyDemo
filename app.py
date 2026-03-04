@@ -3,24 +3,25 @@ import random
 import logging
 
 logger = logging.getLogger(__name__)
+FLAG_REC_ALGO = "use-complex-algorithm"
+EVENT_REC_CLICK = "recommendation-click"
+
 
 def get_recommendations(user_group: str) -> tuple:
     context = Context.builder(f'user-{user_group}').set('group', user_group).build()
     
-    is_premium, reason = ld_service.get_flag("use-complex-algorithm", context)
+    is_premium, reason = ld_service.get_flag(FLAG_REC_ALGO, context)
     
-    if is_premium:
-        items = ["Premium AI Item", "High-Tech Gadget"]
-    else:
-        items = ["Standard Item A", "Standard Item B"]
+    items = ["Premium AI Item", "High-Tech Gadget"] if is_premium else ["Standard Item A", "Standard Item B"]
     
     chance = 0.8 if is_premium else 0.2
     clicked = random.random() < chance
     
     if clicked:
-        ld_service.track_event("recommendation-click", context)
+        ld_service.track_event(EVENT_REC_CLICK, context)
 
     return items, reason, clicked
+
 
 if __name__ == "__main__":
     test_groups = ["beta-testers", "standard-users"]
